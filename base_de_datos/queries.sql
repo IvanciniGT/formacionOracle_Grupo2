@@ -40,11 +40,14 @@ SELECT /*+ GATHER_PLAN_STATISTICS */
 FROM 
     VISUALIZACIONES INNER JOIN USUARIOS ON VISUALIZACIONES.USUARIO = USUARIOS.ID
 WHERE 
-    USUARIOS.NOMBRE LIKE 'Mary%'
+    USUARIOS.NOMBRE LIKE 'Lance%'
 GROUP BY
     USUARIOS.NOMBRE, VISUALIZACIONES.PELICULA
 ORDER BY 
     Numero_Visualizaciones DESC;
+
+EXEC DBMS_STATS.GATHER_TABLE_STATS('HR', 'EMPLOYEES', method_opt => 'FOR COLUMNS SIZE 254 SALARY');
+
 
 select * from table(dbms_xplan.display_cursor(NULL,NULL, format=>'ALLSTATS LAST'));
 -- Saca las estadísticas REALES de la última query en esta sesión... si es que sigue en cache
