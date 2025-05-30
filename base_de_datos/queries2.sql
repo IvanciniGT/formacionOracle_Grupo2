@@ -140,3 +140,15 @@ DROP INDEX idx_peliculas_director;
 
 CREATE INDEX idx_directores_nombre ON DIRECTORES (id, nombre);
 DROP INDEX idx_directores_nombre;
+
+
+
+  SELECT *
+  FROM dba_tables
+    WHERE table_name = 'USUARIOS';
+
+
+SELECT sql_id, sql_text FROM v$sql WHERE sql_text LIKE '%rank%';
+
+SELECT * FROM dba_sql_patches;
+DESC dba_sql_patches;

@@ -219,3 +219,87 @@ SELECT * FROM MOVIMIENTOS WHERE CLIENTE IS NULL; -- Si el campo CLIENTE es NULL,
 -- Clausula IN() está limitada a 1000 valores en ORACLE. Si necesitamos más, hay que hacer una subquery.
 
 --SELECT * FROM MOVIMIENTOS WHERE CLIENTE IN ('Ana García', 'Juan Pérez', 'María López',...); -- Si necesito más de 1000 valores, tengo que hacer una subquery:
+
+-- FUNCIONES PARA TEXTOS:
+
+INSERT INTO textos (texto, nombre, DNI) VALUES ('En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivía un hidalgo de los de lanza antigua, rocín flaco y galgo corredor.', 'Miguel de Cervantes', '12345678A');
+INSERT INTO textos (texto, nombre, DNI) VALUES ('Otro texto de prueba, con más de 200 caracteres, para comprobar el funcionamiento de las funciones de texto en Oracle. Este texto es un poco más largo y debería ser suficiente para probar las funciones de manipulación de cadenas.', 'Anónimo', '87654321B');
+commit;
+
+SELECT * FROM textos;
+
+SELECT 
+    LENGTH(texto) AS longitud_texto, 
+    SUBSTR(dni, 1, 8) AS numero, 
+    SUBSTR(dni, -1) AS letra, 
+    UPPER(texto) AS texto_mayusculas, 
+    LOWER(texto) AS texto_minusculas
+FROM TEXTOS;
+
+--INSRT -- devuelve pa posicion en la que se encuentra un texto dentro de otro texto.
+-- concat -- concatena dos textos
+SELECT nombre,
+substr(nombre, 0, instr(concat(nombre, ' '), ' ')) AS nombre
+FROM TEXTOS;
+
+-- funciones para expresiones regulares PERL
+
+SELECT texto FROM textos;
+
+-- sacar los numeros
+SELECT 
+    REGEXP_SUBSTR(texto, '[0-9]+') AS primer_numero, 
+    REGEXP_SUBSTR(texto, '[0-9]+', 1, 2) AS segundo_numero
+FROM textos;
+-- Hay más... por ejemplo para reemplazar texto, para ver si se cumple una expresión regular, etc.
+-- Reemplazar texto
+SELECT 
+    REGEXP_REPLACE(texto, '[0-9]+', '******') AS texto_sin_numeros
+FROM textos;
+-- Ver si se cumple una expresión regular
+SELECT 
+    REGEXP_COUNT(texto, '[0-9]+') 
+FROM textos
+WHERE 
+        REGEXP_COUNT(texto, '[0-9]+') =1;
+
+--- replace
+SELECT 
+    REPLACE(dni, REGEXP_SUBSTR(dni, '[A-Z]'), '-') AS reemplazado
+FROM textos;
+
+-- TRANSLATE
+SELECT 
+    TRANSLATE(texto, 'áéíóú', 'aeiou') AS TEXTO_SIN_TILDES
+FROM textos;
+
+-- CASE
+
+SELECT * FROM MOVIMIENTOS;
+
+SELECT 
+    CASE 
+        WHEN TIPO_MOV='DEPOSITO' THEN 0
+        WHEN TIPO_MOV='RETIRO' THEN 1
+        ELSE 2
+    END AS TIPO_MOVIMIENTO
+    ,
+    CASE 
+        WHEN IMPORTE>0 THEN 0
+        WHEN IMPORTE<0 THEN 1
+        ELSE 2
+    END AS TIPO_MOVIMIENTO2    
+FROM MOVIMIENTOS;
+
+--- DECODE (está un poco desfasada... hoy en día usamos CASE)
+SELECT 
+    DECODE(TIPO_MOV,
+        'DEPOSITO', 0,
+        'RETIRO', 1,
+        2
+    ) AS TIPO_MOVIMIENTO
+FROM MOVIMIENTOS;
+
+SELECT USUARIO, APPROX_COUNT_DISTINCT(PELICULA)
+FROM VISUALIZACIONES
+GROUP BY USUARIO;

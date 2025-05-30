@@ -250,3 +250,4 @@ Los algoritmos, dependiendo el que sea tienen un determinado coste computacional
     - BÚSQUEDA BINARIA: 26
     - SORT: 100M * log2(100M) = 100M * 26 = 2.600 M
   
+
