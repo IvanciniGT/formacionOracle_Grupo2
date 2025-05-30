@@ -79,3 +79,17 @@ ALTER SYSTEM DUMP DATAFILE <FILE_ID> BLOCK <block_id>;
 
 SELECT value FROM v$dial_info WHERE name = 'Default Trace File'; -- Fichero en el que se guardan los dumps de los bloques
 -- Ese fichero es a nivel de sesión... hay que ejecutarlo inmediatamente antes/después de hacer el dump.
+
+
+
+
+SELECT COUNT(*) FROM USUARIOS;
+
+ANALYZE INDEX idx_visualizaciones_usuario_pelicula VALIDATE STRUCTURE;
+
+SELECT * FROM INDEX_STATS;
+
+EXEC DBMS_STATS.GATHER_TABLE_STATS('CURSO', 'USUARIOS');
+SELECT *
+FROM dba_tables
+WHERE owner = 'CURSO' AND table_name = 'USUARIOS';
